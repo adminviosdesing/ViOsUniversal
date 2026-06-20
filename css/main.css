@@ -1,0 +1,257 @@
+/* Variables de Color: Morado a Cyan (Tech-Fresh) */
+:root {
+    --primary-purple: #6f42c1;
+    /* Morado Base */
+    --dark-purple: #4b1361;
+    /* Morado Oscuro para contrastes */
+    --bright-cyan: #0dcaf0;
+    /* Cyan Brillante/Fresco */
+    --dark-bg: #0f0c1b;
+    /* Fondo ultra oscuro con toque morado */
+    --light-bg: #f8f9fa;
+    /* Fondo claro para secciones que lo requieran */
+    --text-dark: #212529;
+    --text-light: #ffffff;
+}
+
+/* Estilos Generales */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-dark);
+}
+
+/* Hero Section o Banner con Gradiente */
+.bg-gradient-tech {
+    background: linear-gradient(135deg, var(--dark-purple) 0%, var(--primary-purple) 50%, var(--bright-cyan) 100%);
+    color: var(--text-light);
+}
+
+/* Tarjetas del Catálogo Dinámico (Efecto Hover / Touch) */
+.catalog-card {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.catalog-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Capa de descripción que aparece al pasar el mouse o tocar */
+.catalog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(75, 19, 97, 0.9);
+    /* Morado oscuro con opacidad */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-light);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    text-align: center;
+}
+
+/* Activación de la capa (sirve para :hover y para una clase .active en móviles) */
+.catalog-card:hover .catalog-overlay,
+.catalog-card.active .catalog-overlay {
+    opacity: 1;
+}
+
+/* Botón Flotante de WhatsApp */
+.btn-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-whatsapp:hover {
+    transform: scale(1.1);
+    color: white;
+}
+
+/* Animaciones y Efectos para las Tarjetas del Hero y Menú Móvil */
+.transition-up {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.transition-up:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    border-color: var(--bright-cyan) !important;
+}
+
+/* Evitar que el contenido final quede tapado por la barra móvil en celulares */
+@media (max-width: 991.98px) {
+    body {
+        padding-bottom: 80px;
+    }
+}
+
+/* Estilos para las nuevas secciones públicas de ViOs */
+.glass-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(13, 202, 240, 0.15);
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.glass-card:hover {
+    border-color: var(--bright-cyan);
+    transform: translateY(-3px);
+}
+
+/* Custom para el acordeón interactivo */
+.accordion-vios .accordion-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 0.75rem;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+.accordion-vios .accordion-button {
+    background: transparent;
+    color: #fff;
+    box-shadow: none;
+}
+
+.accordion-vios .accordion-button:not(.collapsed) {
+    background: rgba(13, 202, 240, 0.1);
+    color: var(--bright-cyan);
+}
+
+.accordion-vios .accordion-body {
+    color: rgba(255, 255, 255, 0.75);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .4; transform: scale(1.8); }
+}
+
+/* Efecto de destello premium para botones de conversión */
+.btn-shine {
+    position: relative;
+    overflow: hidden;
+}
+.btn-shine::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.24);
+    transform: rotate(30deg);
+    transition: none;
+    animation: shine 4s ease-in-out infinite;
+}
+@keyframes shine {
+    0% { left: -60%; }
+    15% { left: 130%; }
+    100% { left: 130%; }
+}
+
+/* --- ENLACE INFINITO DE MARCAS DINÁMICO Y ARMÓNICO --- */
+.logo-ticker-container {
+    overflow: hidden;
+    padding: 24px 0; /* Espaciado interno balanceado */
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+    /* Forzamos el fondo ultra oscuro para eliminar cualquier espacio claro heredado */
+    background-color: var(--dark-bg) !important; 
+    
+    /* CORRECCIÓN DE LA MALLA: Aumentamos el tamaño a 24px y difuminamos los puntos */
+    background-image: radial-gradient(rgba(111, 66, 193, 0.12) 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+    background-position: center;
+    
+    /* Eliminamos márgenes externos imprevistos */
+    margin: 0 !important; 
+}
+
+/* Difuminado suave transparente a los costados (Sincronizado al color de fondo real) */
+.logo-ticker-container::before,
+.logo-ticker-container::after {
+    background: linear-gradient(to right, var(--dark-bg) 0%, rgba(15, 12, 27, 0) 100%);
+    content: "";
+    height: 100%;
+    position: absolute;
+    width: 180px; /* Un poco más ancho para suavizar la entrada de los logos */
+    z-index: 2;
+    pointer-events: none;
+}
+.logo-ticker-container::before { left: 0; top: 0; }
+.logo-ticker-container::after { right: 0; top: 0; transform: rotateZ(180deg); }
+
+.logo-ticker-track {
+    display: flex;
+    align-items: center;
+    animation: scrollTicker 32s linear infinite;
+}
+
+.logo-ticker-track img {
+    width: 140px;
+    height: 42px;
+    object-fit: contain;
+    margin: 0 40px; /* Espaciado horizontal intermedio y limpio */
+    
+    opacity: 0.25;
+    transition: opacity 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.4s ease, transform 0.4s ease;
+
+    /* Filtro cromático armónico integrado a la estética de ViOs */
+    filter: brightness(0) invert(1) sepia(1) hue-rotate(240deg) saturate(3);
+}
+
+.logo-ticker-track img:hover {
+    opacity: 1;
+    transform: scale(1.06);
+
+    /* Iluminación reactiva con tu cian corporativo */
+    filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(13, 202, 240, 0.6));
+}
+
+@keyframes scrollTicker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Cuando el contenedor detecta que son pocos elementos y están fijos */
+.logo-ticker-container.fijos-y-grandes .logo-ticker-track img {
+    width: 170px;      /* Más grandes para llenar el espacio */
+    height: 55px;
+    margin: 15px 45px;  /* Espaciado balanceado */
+    opacity: 0.4;       /* Un toque más de presencia al estar estáticos */
+}
+
+.logo-ticker-container.fijos-y-grandes .logo-ticker-track img:hover {
+    opacity: 1;
+    transform: scale(1.08);
+}
