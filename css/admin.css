@@ -1,0 +1,162 @@
+/**
+ * ViOs Taller - Panel Administrativo (admin.css)
+ * VERSIÓN ADAPTADA AL HTML EXISTENTE
+ */
+
+:root {
+    /* Paleta Futurista ViOs */
+    --vios-bg: #090a10;
+    --vios-surface: #121420;
+    --vios-cyan: #00ffff;
+    --vios-purple: #6a0dad;
+    --vios-border: rgba(0, 255, 255, 0.15);
+    
+    /* Variables enlazadas a tu etiqueta <style> del HTML */
+    --dark-bg: #090a10;
+    --text-light: #f3f4f6;
+}
+
+body {
+    background-color: var(--dark-bg) !important;
+    color: var(--text-light) !important;
+}
+
+/* =========================================
+   1. MENÚ LATERAL (SIDEBAR)
+   ========================================= */
+.sidebar {
+    background-color: #0b0d16 !important;
+    border-right: 1px solid var(--vios-border) !important;
+}
+
+.nav-link-admin {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.nav-link-admin:hover {
+    color: #fff !important;
+    background: rgba(0, 255, 255, 0.05) !important;
+}
+
+.nav-link-admin.active {
+    background: linear-gradient(90deg, rgba(106, 13, 173, 0.2), rgba(0, 255, 255, 0.1)) !important;
+    border-left: 3px solid var(--vios-cyan) !important;
+    color: var(--vios-cyan) !important;
+}
+
+/* =========================================
+   2. TARJETAS (CARDS) Y MODALES
+   ========================================= */
+.admin-card, .card {
+    background-color: var(--vios-surface) !important;
+    border: 1px solid var(--vios-border) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.modal-content {
+    background-color: var(--vios-surface) !important;
+    border: 1px solid var(--vios-border) !important;
+    box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+}
+
+.modal-header, .modal-footer {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* =========================================
+   3. TABLAS (SOBRESCRITURA DE BOOTSTRAP)
+   ========================================= */
+.table-dark {
+    --bs-table-bg: transparent;
+    --bs-table-striped-bg: rgba(255, 255, 255, 0.02);
+    --bs-table-hover-bg: rgba(0, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.table-secondary th {
+    background-color: rgba(11, 13, 22, 0.8) !important;
+    color: var(--vios-cyan) !important;
+    border-bottom: 1px solid var(--vios-border) !important;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03) !important;
+    color: #e5e7eb !important;
+}
+
+/* =========================================
+   4. INPUTS Y FORMULARIOS
+   ========================================= */
+.form-control.bg-dark, .form-select.bg-dark, textarea.bg-dark {
+    background-color: rgba(9, 10, 16, 0.8) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+.form-control:focus, .form-select:focus, textarea:focus {
+    background-color: #0b0d16 !important;
+    border-color: var(--vios-cyan) !important;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.25) !important;
+    color: #fff !important;
+}
+
+/* =========================================
+   5. BOTONES (GRADIENTE VIOS)
+   ========================================= */
+.btn-info {
+    background: linear-gradient(135deg, var(--vios-purple), var(--vios-cyan)) !important;
+    border: none !important;
+    color: #fff !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-info:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3);
+    color: #fff !important;
+}
+
+.btn-outline-info {
+    border-color: var(--vios-cyan) !important;
+    color: var(--vios-cyan) !important;
+}
+
+.btn-outline-info:hover {
+    background: rgba(0, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+/* =========================================
+   6. SISTEMA TOAST (NOTIFICACIONES JS)
+   ========================================= */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast-vios {
+    background: linear-gradient(135deg, var(--vios-purple), var(--vios-cyan));
+    color: #ffffff;
+    padding: 14px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.3s forwards;
+}
+
+.toast-vios.fade-out {
+    animation: fadeOut 0.3s forwards;
+}
+
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+@keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
