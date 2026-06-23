@@ -519,56 +519,7 @@ async function cerrarSesion() {
   window.location.href = "login.html";
 }
 
-// ==========================================
-// MÓDULO DE INVENTARIO Y STOCK
-// ==========================================
 
-async function cargarInventario() {
-  const tbody = document.getElementById("tbodyInventario");
-  if (!tbody) return;
-
-  try {
-    const { data, error } = await window.db
-      .from("materiales")
-      .select("*")
-      .order("nombre", { ascending: true });
-
-    if (error) throw error;
-
-    tbody.innerHTML = data
-      .map((m) => {
-        const min = m.stock_minimo || 0;
-        const actual = m.stock_actual || 0;
-        // Comprobamos si el stock está en peligro
-        const esBajo = actual <= min;
-
-        const estadoHtml = esBajo
-          ? `<span class="badge bg-danger bg-opacity-25 text-danger border border-danger"><i class="bi bi-exclamation-triangle me-1"></i>Bajo</span>`
-          : `<span class="badge bg-success bg-opacity-25 text-success border border-success"><i class="bi bi-check-circle me-1"></i>Óptimo</span>`;
-
-        return `
-        <tr>
-            <td class="ps-3 fw-bold text-white">${m.nombre}</td>
-            <td class="text-white-50">${m.unidad_medida || "N/A"}</td>
-            <td class="text-white-50">${min}</td>
-            <td class="fw-bold fs-6 ${esBajo ? "text-danger" : "text-success"}">${actual}</td>
-            <td>${estadoHtml}</td>
-            <td class="text-end pe-3">
-                <button class="btn btn-outline-info btn-sm border-0 me-1" onclick="ajustarStock('${m.id}', '${m.nombre}', ${actual})" title="Ajuste Manual">
-                    <i class="bi bi-sliders"></i>
-                </button>
-                <button class="btn btn-outline-danger btn-sm border-0" onclick="eliminarRegistro('materiales', '${m.id}')" title="Eliminar Material">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        </tr>
-        `;
-      })
-      .join("");
-  } catch (err) {
-    console.error("Error al cargar inventario:", err.message);
-  }
-}
 
 // Función para sumar o restar material manualmente (mermas o compras nuevas)
 async function ajustarStock(id, nombre, stockActual) {
@@ -965,110 +916,64 @@ async function registrarVentaYDescontarStock(e) {
     }
 }
 
-/**
- * Carga los materiales y los muestra en la tabla del inventario
- */
-async function cargarInventario() {
-    const tbody = document.getElementById("tablaInventarioBody");
-    if (!tbody) return;
-
-    try {
-        // Consultar la tabla de materiales
-        const { data, error } = await window.db
-            .from("materiales")
-            .select("*");
-
-        if (error) throw error;
-
-        // Limpiar tabla
-        tbody.innerHTML = "";
-
-        // Rellenar tabla
-        data.forEach(material => {
-            const esBajo = material.stock_actual <= material.stock_minimo;
-            
-            // Fila con clase de alerta si el stock es bajo
-            const fila = document.createElement("tr");
-            if (esBajo) fila.classList.add("table-danger"); // Pone la fila roja si falta material
-
-            fila.innerHTML = `
-                <td class="ps-3">${material.nombre}</td>
-                <td><strong>${material.stock_actual}</strong> <small>m</small></td>
-                <td>${material.stock_minimo} <small>m</small></td>
-                <td>
-                    ${esBajo 
-                        ? '<span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> Bajo</span>' 
-                        : '<span class="badge bg-success"><i class="bi bi-check-circle"></i> OK</span>'}
-                </td>
-            `;
-            tbody.appendChild(fila);
-        });
-    } catch (err) {
-        console.error("Error al cargar inventario:", err);
-        tbody.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Error al cargar datos</td></tr>`;
-    }
-}
-
-// Asegurarse de que el inventario cargue al abrir la página
-document.addEventListener("DOMContentLoaded", () => {
-    cargarInventario();
-});
+// ==========================================
+// MÓDULO DE INVENTARIO Y STOCK (CORREGIDO)
+// ==========================================
 
 async function cargarInventario() {
-    const tbody = document.getElementById("tbodyInventario");
-    if (!tbody) return;
+  const tbody = document.getElementById("tbodyInventario");
+  if (!tbody) return;
 
-    // Indicador de carga
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-white-50">Cargando materiales...</td></tr>';
+  // Estado de carga
+  tbody.innerHTML = '<tr><td colspan="6" class="text-center text-white-50">Cargando materiales...</td></tr>';
 
-    try {
-        const { data, error } = await window.db
-            .from("materiales")
-            .select("*");
+  try {
+    const { data, error } = await window.db
+      .from("materiales")
+      .select("*")
+      .order("nombre", { ascending: true });
 
-        if (error) throw error;
+    if (error) throw error;
 
-        // Limpiar el tbody
-        tbody.innerHTML = "";
-
-        if (data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay materiales registrados.</td></tr>';
-            return;
-        }
-
-        // Llenar filas
-        data.forEach(material => {
-            const esBajo = material.stock_actual <= material.stock_minimo;
-            const fila = document.createElement("tr");
-            
-            if (esBajo) fila.classList.add("table-danger"); // Pone la fila en rojo si es bajo
-
-            fila.innerHTML = `
-                <td class="ps-3 fw-bold">${material.nombre}</td>
-                <td>${material.unidad_medida}</td>
-                <td>${material.stock_minimo}</td>
-                <td>${material.stock_actual}</td>
-                <td>
-                    ${esBajo 
-                        ? '<span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> Bajo</span>' 
-                        : '<span class="badge bg-success"><i class="bi bi-check-circle"></i> OK</span>'}
-                </td>
-                <td class="text-end pe-3">
-                    <button class="btn btn-sm btn-outline-info" onclick="editarMaterial(${material.id})">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                </td>
-            `;
-            tbody.appendChild(fila);
-        });
-    } catch (err) {
-        console.error("Error al cargar inventario:", err);
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error al cargar datos.</td></tr>';
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay materiales registrados en el sistema.</td></tr>';
+      return;
     }
-}
-document.getElementById('tab-inventario-btn').addEventListener('click', () => {
-    cargarInventario();
-});
 
-// Inicializar listener
-document.getElementById("formRegistrarVenta").addEventListener("submit", registrarVentaYDescontarStock);
+    tbody.innerHTML = data
+      .map((m) => {
+        const min = m.stock_minimo || 0;
+        const actual = m.stock_actual || 0;
+        const esBajo = actual <= min;
+
+        // Etiquetas visuales para el panel
+        const estadoHtml = esBajo
+          ? `<span class="badge bg-danger bg-opacity-25 text-danger border border-danger"><i class="bi bi-exclamation-triangle me-1"></i>Bajo</span>`
+          : `<span class="badge bg-success bg-opacity-25 text-success border border-success"><i class="bi bi-check-circle me-1"></i>Óptimo</span>`;
+
+        return `
+        <tr class="${esBajo ? 'table-danger text-dark' : ''}">
+            <td class="ps-3 fw-bold ${esBajo ? 'text-dark' : 'text-white'}">${m.nombre}</td>
+            <td class="${esBajo ? 'text-dark' : 'text-white-50'}">${m.unidad_medida || "N/A"}</td>
+            <td class="${esBajo ? 'text-dark' : 'text-white-50'}">${min}</td>
+            <td class="fw-bold fs-6 ${esBajo ? "text-danger" : "text-success"}">${actual}</td>
+            <td>${estadoHtml}</td>
+            <td class="text-end pe-3">
+                <button class="btn btn-outline-info btn-sm border-0 me-1" onclick="ajustarStock('${m.id}', '${m.nombre}', ${actual})" title="Ajuste Manual">
+                    <i class="bi bi-sliders"></i>
+                </button>
+                <button class="btn btn-outline-danger btn-sm border-0" onclick="eliminarRegistro('materiales', '${m.id}')" title="Eliminar Material">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    console.error("Error al cargar inventario:", err.message);
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error al cargar datos.</td></tr>';
+  }
+}
+
+document.getElementById("formRegistrarVenta")?.addEventListener("submit", registrarVentaYDescontarStock);
