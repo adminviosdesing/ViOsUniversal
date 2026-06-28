@@ -450,5 +450,94 @@ async function cargarAlertasCRM() {
 }
 
 // ... Mantener tu lógica jsPDF (generarPDFCotizacion) e inserción final (formCotizadorPro submit) intactas abajo ...
-function aplicarRestriccionesDeRol() { /* Igual */ }
+
 async function cerrarSesion() { /* Igual */ }
+
+// Abrir modal de compra
+window.abrirModalCompra = function(id, nombre) {
+    document.getElementById("compraMaterialId").value = id;
+    document.getElementById("compraMaterialNombre").value = nombre;
+    new bootstrap.Modal(document.getElementById("modalNuevaCompra")).show();
+};
+
+// Procesar compra
+document.getElementById("formNuevaCompra")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const materialId = document.getElementById("compraMaterialId").value;
+    const rolls = parseFloat(document.getElementById("compraRollos").value);
+    const largo = parseFloat(document.getElementById("compraLargo").value);
+    const ancho = parseFloat(document.getElementById("compraAncho").value);
+    const costoTotal = parseFloat(document.getElementById("compraCosto").value);
+
+    // Normalización a m2 (esto es lo que se guarda en la tabla y lo que el trigger suma al stock)
+    const metrosCuadrados = rolls * largo * ancho;
+
+    try {
+        const { error } = await window.db.from("entradas_inventario").insert([{
+            material_id: materialId,
+            metros_cuadrados_recibidos: metrosCuadrados,
+            costo_total: costoTotal
+        }]);
+
+        if (error) throw error;
+
+        mostrarNotificacion(`Compra registrada: ${metrosCuadrados} m² agregados.`, "success");
+        bootstrap.Modal.getInstance(document.getElementById("modalNuevaCompra")).hide();
+        cargarInventario(); // Refresca la tabla
+    } catch (err) {
+        mostrarNotificacion("Error al registrar compra: " + err.message, "error");
+    }
+});
+
+// Lógica para aplicar el ajuste desde el modal
+document.getElementById("formAjustarStock")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("ajusteMaterialId").value;
+    const stockActual = parseFloat(document.getElementById("ajusteStockActual").value);
+    const ajuste = parseFloat(document.getElementById("ajusteCantidad").value);
+    
+    const nuevoStock = stockActual + ajuste;
+    if (nuevoStock < 0) return mostrarNotificacion("Error: El stock no puede ser menor a cero.", "error");
+
+    try {
+        // Directo a la tabla materiales
+        const { error } = await window.db.from("materiales")
+            .update({ stock_actual: nuevoStock, ultima_actualizacion: new Date().toISOString() })
+            .eq("id", id);
+            
+        if (error) throw error;
+        mostrarNotificacion("Stock ajustado correctamente.", "success");
+        bootstrap.Modal.getInstance(document.getElementById("modalAjustarStock")).hide();
+        cargarInventario();
+    } catch (err) { mostrarNotificacion("Error: " + err.message, "error"); }
+});
+
+// --- SEGURIDAD: CONTROL DE ACCESOS POR ROL ---
+async function aplicarRestriccionesDeRol() {
+    try {
+        const { data: { user } } = await window.db.auth.getUser();
+        if (!user) return;
+        const { data: perfil } = await window.db.from('perfiles').select('rol').eq('id', user.id).single();
+        const rol = perfil?.rol;
+
+        // Ocultar botones de borrar (clase .btn-outline-danger) si no es Master
+        if (rol !== 'master') {
+            document.querySelectorAll('.btn-outline-danger').forEach(btn => btn.style.display = 'none');
+        }
+
+        // Bloqueo de Pestañas según rol
+        if (rol === 'systems' || rol === 'content_creator') {
+            const tabsBloqueados = ['tab-inventario-btn', 'tab-cotizador-btn', 'tab-config-btn'];
+            tabsBloqueados.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.style.display = 'none';
+            });
+        }
+        
+        if (rol === 'content_creator') {
+            const el = document.getElementById('tab-contacto-btn');
+            if(el) el.style.display = 'none';
+        }
+    } catch (err) { console.error("Error RBAC:", err.message); }
+}
