@@ -12,33 +12,28 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
       rel="stylesheet"
     />
-    
     <link rel="stylesheet" href="css/admin.css" />
     <style>
       body {
         background-color: var(--dark-bg);
         color: var(--text-light);
       }
-
       .sidebar {
         min-height: 100vh;
         background: rgba(255, 255, 255, 0.03);
         border-right: 1px solid rgba(13, 202, 240, 0.15);
         backdrop-filter: blur(10px);
       }
-
       .nav-link-admin {
         color: rgba(255, 255, 255, 0.6);
         border-radius: 8px;
         transition: all 0.3s ease;
       }
-
       .nav-link-admin:hover,
       .nav-link-admin.active {
         color: #0dcaf0 !important;
         background: rgba(13, 202, 240, 0.1);
       }
-
       .admin-card {
         background: rgba(255, 255, 255, 0.02);
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -75,8 +70,6 @@
               data-bs-target="#tab-catalogo"
               type="button"
               role="tab"
-              aria-controls="tab-catalogo"
-              aria-selected="true"
             >
               <i class="bi bi-images me-2"></i> Catálogo
             </button>
@@ -87,8 +80,6 @@
               data-bs-target="#tab-historia"
               type="button"
               role="tab"
-              aria-controls="tab-historia"
-              aria-selected="false"
             >
               <i class="bi bi-clock-history me-2"></i> Cronología
             </button>
@@ -99,8 +90,6 @@
               data-bs-target="#tab-proveedores"
               type="button"
               role="tab"
-              aria-controls="tab-proveedores"
-              aria-selected="false"
             >
               <i class="bi bi-building me-2"></i> Proveedores
             </button>
@@ -111,8 +100,6 @@
               data-bs-target="#tab-contacto"
               type="button"
               role="tab"
-              aria-controls="tab-contacto"
-              aria-selected="false"
             >
               <i class="bi bi-telephone me-2"></i> Contacto y Redes
             </button>
@@ -123,12 +110,9 @@
               data-bs-target="#tab-inventario"
               type="button"
               role="tab"
-              aria-controls="tab-inventario"
-              aria-selected="false"
             >
               <i class="bi bi-box-seam me-2"></i> Inventario
             </button>
-
             <button
               class="nav-link nav-link-admin text-start mb-2 border-0"
               id="tab-cotizador-btn"
@@ -136,12 +120,9 @@
               data-bs-target="#tab-cotizador"
               type="button"
               role="tab"
-              aria-controls="tab-cotizador"
-              aria-selected="false"
             >
               <i class="bi bi-calculator me-2"></i> Cotizador
             </button>
-
             <button
               class="nav-link nav-link-admin text-start mb-4 border-0"
               id="tab-config-btn"
@@ -149,28 +130,23 @@
               data-bs-target="#tab-config"
               type="button"
               role="tab"
-              aria-controls="tab-config"
-              aria-selected="false"
             >
               <i class="bi bi-gear me-2"></i> Seguridad
             </button>
-
             <hr class="border-secondary" />
-
             <a
               href="index.html"
               target="_blank"
               class="nav-link nav-link-admin text-start mb-2 text-decoration-none"
+              ><i class="bi bi-arrow-up-right-square me-2"></i> Ver Sitio
+              Público</a
             >
-              <i class="bi bi-arrow-up-right-square me-2"></i> Ver Sitio Público
-            </a>
             <a
               href="#"
               id="btnLogout"
               class="nav-link text-start text-danger mb-2 text-decoration-none small"
+              ><i class="bi bi-box-arrow-left me-2"></i> Cerrar Sesión</a
             >
-              <i class="bi bi-box-arrow-left me-2"></i> Cerrar Sesión
-            </a>
           </div>
         </nav>
 
@@ -203,7 +179,6 @@
                   <i class="bi bi-plus-lg me-1"></i> Agregar Trabajo
                 </button>
               </div>
-
               <div class="card admin-card rounded-3 overflow-hidden">
                 <div class="table-responsive">
                   <table class="table table-dark table-hover mb-0 align-middle">
@@ -228,49 +203,46 @@
                   </table>
                 </div>
               </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="tab-inventario"
+              role="tabpanel"
+              aria-labelledby="tab-inventario-btn"
+            >
               <div
-                class="tab-pane fade"
-                id="tab-inventario"
-                role="tabpanel"
-                aria-labelledby="tab-inventario-btn"
+                class="d-flex justify-content-between align-items-center mb-4"
               >
-                <div
-                  class="d-flex justify-content-between align-items-center mb-4"
+                <h4 class="mb-0 fw-bold">Inventario de Materiales</h4>
+                <button
+                  class="btn btn-info rounded-pill px-3 btn-sm"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalNuevoMaterial"
                 >
-                  <h4 class="mb-0 fw-bold">Inventario de Materiales</h4>
-                  <button
-                    class="btn btn-info rounded-pill px-3 btn-sm"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalNuevoMaterial"
-                  >
-                    <i class="bi bi-plus-lg me-1"></i> Agregar Material
-                  </button>
-                </div>
-
-                <div class="card admin-card rounded-3 overflow-hidden">
-                  <div class="table-responsive">
-                    <table
-                      class="table table-dark table-hover mb-0 align-middle"
+                  <i class="bi bi-plus-lg me-1"></i> Agregar Material
+                </button>
+              </div>
+              <div class="card admin-card rounded-3 overflow-hidden">
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover mb-0 align-middle">
+                    <thead
+                      class="table-secondary text-uppercase"
+                      style="font-size: 0.75rem"
                     >
-                      <thead
-                        class="table-secondary text-uppercase"
-                        style="font-size: 0.75rem"
-                      >
-                        <tr>
-                          <th class="ps-3">Material</th>
-                          <th>Unidad</th>
-                          <th>Stock Mínimo</th>
-                          <th>Stock Actual</th>
-                          <th>Estado</th>
-                          <th class="text-end pe-3">Acciones</th>
-                        </tr>
-                      </thead>
-                      <tbody
-                        id="tbodyInventario"
-                        style="font-size: 0.9rem"
-                      ></tbody>
-                    </table>
-                  </div>
+                      <tr>
+                        <th class="ps-3">Material</th>
+                        <th>Unidad</th>
+                        <th>Stock Mínimo</th>
+                        <th>Stock Actual</th>
+                        <th>Estado</th>
+                        <th class="text-end pe-3">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody
+                      id="tbodyInventario"
+                      style="font-size: 0.9rem"
+                    ></tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -293,7 +265,6 @@
                   <i class="bi bi-plus-lg me-1"></i> Agregar Hito
                 </button>
               </div>
-
               <div class="card admin-card rounded-3 overflow-hidden">
                 <div class="table-responsive">
                   <table class="table table-dark table-hover mb-0 align-middle">
@@ -337,7 +308,6 @@
                   <i class="bi bi-plus-lg me-1"></i> Agregar Marca
                 </button>
               </div>
-
               <div class="card admin-card rounded-3 overflow-hidden">
                 <div class="table-responsive">
                   <table class="table table-dark table-hover mb-0 align-middle">
@@ -383,18 +353,16 @@
                         type="text"
                         id="cfgTelefono"
                         class="form-control bg-dark border-secondary text-white"
-                        placeholder="Ej: +52 686 123 4567"
                       />
                     </div>
                     <div class="col-md-6 mb-3">
                       <label class="form-label small text-white-50"
-                        >Enlace de WhatsApp (Escríbelo sin espacios)</label
+                        >Enlace de WhatsApp</label
                       >
                       <input
                         type="text"
                         id="cfgWhatsapp"
                         class="form-control bg-dark border-secondary text-white"
-                        placeholder="Ej: 5216861234567"
                       />
                     </div>
                   </div>
@@ -406,36 +374,33 @@
                       type="email"
                       id="cfgCorreo"
                       class="form-control bg-dark border-secondary text-white"
-                      placeholder="correo@vios.com"
                     />
                   </div>
                   <div class="mb-3">
                     <label class="form-label small text-white-50"
-                      >Enlace de Facebook (URL)</label
+                      >Enlace de Facebook</label
                     >
                     <input
                       type="url"
                       id="cfgFacebook"
                       class="form-control bg-dark border-secondary text-white"
-                      placeholder="https://facebook.com/vios..."
                     />
                   </div>
                   <div class="mb-4">
                     <label class="form-label small text-white-50"
-                      >Enlace de Instagram (URL)</label
+                      >Enlace de Instagram</label
                     >
                     <input
                       type="url"
                       id="cfgInstagram"
                       class="form-control bg-dark border-secondary text-white"
-                      placeholder="https://instagram.com/vios..."
                     />
                   </div>
                   <button
                     type="submit"
                     class="btn btn-info rounded-pill px-4 fw-bold text-dark"
                   >
-                    <i class="bi bi-save me-1"></i> Guardar Cambios de Contacto
+                    <i class="bi bi-save me-1"></i> Guardar Cambios
                   </button>
                 </form>
               </div>
@@ -448,7 +413,6 @@
               aria-labelledby="tab-cotizador-btn"
             >
               <h4 class="mb-4 fw-bold">Cotizador Interno</h4>
-
               <div
                 class="card text-white mb-4"
                 style="
@@ -477,7 +441,7 @@
                             class="form-select bg-dark border-secondary text-white"
                             required
                           >
-                            <option value="">Cargando clientes...</option>
+                            <option value="">Cargando...</option>
                           </select>
                           <button
                             class="btn btn-outline-info"
@@ -489,7 +453,6 @@
                           </button>
                         </div>
                       </div>
-
                       <div class="col-md-6">
                         <label class="form-label small text-white-50"
                           >Material / Servicio</label
@@ -502,7 +465,6 @@
                           <option value="">Selecciona material...</option>
                         </select>
                       </div>
-
                       <div class="col-md-3">
                         <label class="form-label small text-white-50"
                           >Ancho (mts)</label
@@ -512,7 +474,6 @@
                           step="0.01"
                           id="cotAncho"
                           class="form-control bg-dark border-secondary text-white"
-                          placeholder="0.00"
                           required
                         />
                       </div>
@@ -525,7 +486,6 @@
                           step="0.01"
                           id="cotAlto"
                           class="form-control bg-dark border-secondary text-white"
-                          placeholder="0.00"
                           required
                         />
                       </div>
@@ -538,7 +498,6 @@
                           step="0.01"
                           id="cotPrecioManual"
                           class="form-control bg-dark border-info text-white"
-                          placeholder="Ej: 350.00"
                           required
                         />
                         <div
@@ -549,7 +508,6 @@
                           Costo base: $0.00
                         </div>
                       </div>
-
                       <div class="col-md-3">
                         <label class="form-label small text-white-50"
                           >Impuesto (IVA)</label
@@ -563,22 +521,19 @@
                           <option value="0.00">Sin IVA (0%)</option>
                         </select>
                       </div>
-
                       <div class="col-12">
                         <label class="form-label small text-white-50"
-                          >Notas / Comentarios Internos</label
+                          >Notas</label
                         >
                         <textarea
                           id="cotNotas"
                           class="form-control bg-dark border-secondary text-white"
                           rows="2"
-                          placeholder="Detalles de instalación, acabados, etc..."
                         ></textarea>
                       </div>
                     </div>
-
                     <div
-                      class="mt-4 pt-3 border-top border-secondary d-flex flex-wrap justify-content-between align-items-center gap-3"
+                      class="mt-4 pt-3 border-top border-secondary d-flex justify-content-between align-items-center"
                     >
                       <div class="fs-4 fw-bold">
                         Total:
@@ -606,100 +561,6 @@
                       </div>
                     </div>
                   </form>
-
-                  <div
-                    id="vistaPreviaMensaje"
-                    class="mt-4 p-3 rounded bg-dark border border-secondary d-none"
-                  >
-                    <h6 class="text-info small fw-bold mb-2">
-                      <i class="bi bi-whatsapp me-1"></i> Vista previa del
-                      mensaje:
-                    </h6>
-                    <p
-                      id="textoMensajePreview"
-                      class="small text-white-50 fst-italic mb-2"
-                    ></p>
-                    <button
-                      type="button"
-                      id="btnEnviarWhatsApp"
-                      class="btn btn-success btn-sm rounded-pill px-3"
-                    >
-                      <i class="bi bi-send-fill me-1"></i> Enviar por WhatsApp
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="modal fade"
-                id="modalRapidoCliente"
-                tabindex="-1"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog modal-dialog-centered">
-                  <div
-                    class="modal-content text-white"
-                    style="
-                      background: #161922;
-                      border: 1px solid rgba(13, 202, 240, 0.3);
-                    "
-                  >
-                    <div class="modal-header border-secondary">
-                      <h5 class="modal-title fw-bold">
-                        <i class="bi bi-person-plus-fill text-info me-2"></i
-                        >Alta Rápida de Cliente
-                      </h5>
-                      <button
-                        type="button"
-                        class="btn-close btn-close-white"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <form id="formRapidoCliente">
-                      <div class="modal-body">
-                        <div class="mb-3">
-                          <label class="form-label small text-white-50"
-                            >Nombre Completo</label
-                          >
-                          <input
-                            type="text"
-                            id="clieRapidoNombre"
-                            class="form-control bg-dark border-secondary text-white"
-                            placeholder="Ej: Juan Pérez"
-                            required
-                          />
-                        </div>
-                        <div class="mb-3">
-                          <label class="form-label small text-white-50"
-                            >Número de WhatsApp</label
-                          >
-                          <input
-                            type="tel"
-                            id="clieRapidoTel"
-                            class="form-control bg-dark border-secondary text-white"
-                            placeholder="Ej: 526861234567 (10-12 dígitos)"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div class="modal-footer border-secondary">
-                        <button
-                          type="button"
-                          class="btn btn-outline-secondary rounded-pill btn-sm text-white"
-                          data-bs-dismiss="modal"
-                        >
-                          Cancelar
-                        </button>
-                        <button
-                          type="submit"
-                          class="btn btn-info rounded-pill btn-sm px-3 text-dark fw-bold"
-                        >
-                          Guardar Cliente
-                        </button>
-                      </div>
-                    </form>
-                  </div>
                 </div>
               </div>
             </div>
@@ -719,7 +580,7 @@
                   id="formSeguridadMock"
                   onsubmit="
                     event.preventDefault();
-                    alert('Contraseña cambiada (Simulación con éxito)');
+                    alert('Contraseña cambiada');
                     this.reset();
                   "
                 >
@@ -736,17 +597,6 @@
                   <div class="mb-3">
                     <label class="form-label small text-white-50"
                       >Nueva Contraseña</label
-                    >
-                    <input
-                      type="password"
-                      class="form-control bg-dark border-secondary text-white"
-                      minlength="6"
-                      required
-                    />
-                  </div>
-                  <div class="mb-4">
-                    <label class="form-label small text-white-50"
-                      >Confirmar Nueva Contraseña</label
                     >
                     <input
                       type="password"
@@ -788,59 +638,40 @@
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
-              aria-label="Close"
             ></button>
           </div>
           <form id="formNuevoTrabajo">
             <div class="modal-body">
               <div class="mb-3">
-                <label
-                  for="addTrabajoTitulo"
-                  class="form-label small text-white-50"
-                  >Título</label
-                >
-                <input
+                <label class="form-label small text-white-50">Título</label
+                ><input
                   type="text"
                   id="addTrabajoTitulo"
                   class="form-control bg-dark border-secondary text-white"
-                  placeholder="Ej: Letrero Luminoso"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label
-                  for="addTrabajoCategoria"
-                  class="form-label small text-white-50"
-                  >Categoría</label
-                >
-                <input
+                <label class="form-label small text-white-50">Categoría</label
+                ><input
                   type="text"
                   id="addTrabajoCategoria"
                   class="form-control bg-dark border-secondary text-white"
-                  placeholder="Ej: Viniles / Impresión"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label
-                  for="addTrabajoDesc"
-                  class="form-label small text-white-50"
+                <label class="form-label small text-white-50"
                   >Descripción Corta</label
-                >
-                <textarea
+                ><textarea
                   id="addTrabajoDesc"
                   class="form-control bg-dark border-secondary text-white"
                   rows="3"
-                  placeholder="Detalles del trabajo realizado..."
                 ></textarea>
               </div>
               <div class="mb-3">
-                <label
-                  for="addTrabajoImg"
-                  class="form-label small text-white-50"
-                  >Imagen del Proyecto</label
-                >
-                <input
+                <label class="form-label small text-white-50">Imagen</label
+                ><input
                   type="file"
                   id="addTrabajoImg"
                   class="form-control bg-dark border-secondary text-white"
@@ -861,7 +692,7 @@
                 type="submit"
                 class="btn btn-info rounded-pill btn-sm px-3 fw-bold text-dark"
               >
-                Guardar Trabajo
+                Guardar
               </button>
             </div>
           </form>
@@ -889,44 +720,36 @@
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
-              aria-label="Close"
             ></button>
           </div>
           <form id="formNuevoHito">
             <div class="modal-body">
               <div class="row">
                 <div class="col-4 mb-3">
-                  <label class="form-label small text-white-50">Año</label>
-                  <input
+                  <label class="form-label small text-white-50">Año</label
+                  ><input
                     type="text"
                     id="addHitoAno"
                     class="form-control bg-dark border-secondary text-white"
-                    placeholder="Ej: 2018"
                     required
                   />
                 </div>
                 <div class="col-8 mb-3">
-                  <label class="form-label small text-white-50"
-                    >Título del Evento</label
-                  >
-                  <input
+                  <label class="form-label small text-white-50">Título</label
+                  ><input
                     type="text"
                     id="addHitoTitulo"
                     class="form-control bg-dark border-secondary text-white"
-                    placeholder="Ej: Apertura"
                     required
                   />
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Descripción</label
-                >
-                <textarea
+                <label class="form-label small text-white-50">Descripción</label
+                ><textarea
                   id="addHitoDesc"
                   class="form-control bg-dark border-secondary text-white"
                   rows="4"
-                  placeholder="Detalles..."
                   required
                 ></textarea>
               </div>
@@ -943,7 +766,7 @@
                 type="submit"
                 class="btn btn-info rounded-pill btn-sm px-3 fw-bold text-dark"
               >
-                Guardar Hito
+                Guardar
               </button>
             </div>
           </form>
@@ -971,28 +794,22 @@
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
-              aria-label="Close"
             ></button>
           </div>
           <form id="formNuevoProveedor">
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Nombre del Proveedor / Producto</label
-                >
-                <input
+                <label class="form-label small text-white-50">Nombre</label
+                ><input
                   type="text"
                   id="addProvNombre"
                   class="form-control bg-dark border-secondary text-white"
-                  placeholder="Ej: 3M, Oracal, Avery"
                   required
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Logo (Se recomienda PNG transparente)</label
-                >
-                <input
+                <label class="form-label small text-white-50">Logo</label
+                ><input
                   type="file"
                   id="addProvLogo"
                   class="form-control bg-dark border-secondary text-white"
@@ -1023,7 +840,7 @@
 
     <div
       class="modal fade"
-      id="modalEditarTrabajo"
+      id="modalRapidoCliente"
       tabindex="-1"
       aria-hidden="true"
     >
@@ -1034,57 +851,35 @@
         >
           <div class="modal-header border-secondary">
             <h5 class="modal-title fw-bold">
-              <i class="bi bi-pencil-square text-info me-2"></i>Editar Trabajo
-              del Catálogo
+              <i class="bi bi-person-plus-fill text-info me-2"></i>Alta Rápida
+              de Cliente
             </h5>
             <button
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
-              aria-label="Close"
             ></button>
           </div>
-          <form id="formEditarTrabajo">
-            <input type="hidden" id="editTrabajoId" />
+          <form id="formRapidoCliente">
             <div class="modal-body">
               <div class="mb-3">
-                <label class="form-label small text-white-50">Título</label>
-                <input
+                <label class="form-label small text-white-50"
+                  >Nombre Completo</label
+                ><input
                   type="text"
-                  id="editTrabajoTitulo"
-                  class="form-control bg-dark border-secondary text-white"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label small text-white-50">Categoría</label>
-                <input
-                  type="text"
-                  id="editTrabajoCategoria"
+                  id="clieRapidoNombre"
                   class="form-control bg-dark border-secondary text-white"
                   required
                 />
               </div>
               <div class="mb-3">
                 <label class="form-label small text-white-50"
-                  >Descripción Corta</label
-                >
-                <textarea
-                  id="editTrabajoDesc"
+                  >Número de WhatsApp</label
+                ><input
+                  type="tel"
+                  id="clieRapidoTel"
                   class="form-control bg-dark border-secondary text-white"
-                  rows="3"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Reemplazar Imagen (Dejar vacío para conservar la
-                  actual)</label
-                >
-                <input
-                  type="file"
-                  id="editTrabajoImagen"
-                  class="form-control bg-dark border-secondary text-white"
-                  accept="image/*"
+                  required
                 />
               </div>
             </div>
@@ -1098,9 +893,9 @@
               </button>
               <button
                 type="submit"
-                class="btn btn-info rounded-pill btn-sm px-3 fw-bold text-dark"
+                class="btn btn-info rounded-pill btn-sm px-3 text-dark fw-bold"
               >
-                Guardar Cambios
+                Guardar
               </button>
             </div>
           </form>
@@ -1110,7 +905,7 @@
 
     <div
       class="modal fade"
-      id="modalEditarHito"
+      id="modalNuevoMaterial"
       tabindex="-1"
       aria-hidden="true"
     >
@@ -1120,170 +915,41 @@
           style="background: #161922; border: 1px solid rgba(13, 202, 240, 0.2)"
         >
           <div class="modal-header border-secondary">
-            <h5 class="modal-title fw-bold">
-              <i class="bi bi-pencil-square text-info me-2"></i>Editar Hito
-              Cronológico
-            </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <form id="formEditarHito">
-            <input type="hidden" id="editHitoId" />
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-4 mb-3">
-                  <label class="form-label small text-white-50">Año</label>
-                  <input
-                    type="text"
-                    id="editHitoAno"
-                    class="form-control bg-dark border-secondary text-white"
-                    required
-                  />
-                </div>
-                <div class="col-8 mb-3">
-                  <label class="form-label small text-white-50"
-                    >Título del Evento</label
-                  >
-                  <input
-                    type="text"
-                    id="editHitoTitulo"
-                    class="form-control bg-dark border-secondary text-white"
-                    required
-                  />
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Descripción</label
-                >
-                <textarea
-                  id="editHitoDesc"
-                  class="form-control bg-dark border-secondary text-white"
-                  rows="4"
-                  required
-                ></textarea>
-              </div>
-            </div>
-            <div class="modal-footer border-secondary">
-              <button
-                type="button"
-                class="btn btn-outline-secondary rounded-pill btn-sm text-white"
-                data-bs-dismiss="modal"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                class="btn btn-info rounded-pill btn-sm px-3 fw-bold text-dark"
-              >
-                Guardar Cambios
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div
-      class="modal fade"
-      id="modalNuevoMaterial"
-      tabindex="-1"
-      aria-labelledby="modalNuevoMaterialLabel"
-      aria-hidden="true"
-    >
-    <div class="modal fade" id="modalRegistrarVenta" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-white border-secondary">
-            <div class="modal-header border-secondary">
-                <h5 class="modal-title fw-bold text-success">
-                    <i class="bi bi-cart-plus me-2"></i>Registrar Venta
-                </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <form id="formRegistrarVenta">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label small text-white-50">Seleccionar Material</label>
-                        <select id="selectVentaMaterial" class="form-select bg-dark border-secondary text-white" required>
-                            <option value="">Cargando materiales...</option>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small text-white-50">Cantidad (m lineales)</label>
-                            <input type="number" step="0.01" id="ventaCantidad" class="form-control bg-dark border-secondary text-white" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label small text-white-50">Total Cobrado ($)</label>
-                            <input type="number" step="0.01" id="ventaTotal" class="form-control bg-dark border-secondary text-white" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer border-secondary">
-                    <button type="button" class="btn btn-outline-secondary rounded-pill btn-sm text-white" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success rounded-pill btn-sm px-4 fw-bold">Registrar y Descontar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="card bg-dark border-secondary mt-4">
-    <div class="card-header border-secondary d-flex justify-content-between align-items-center">
-        <h5 class="mb-0 text-white"><i class="bi bi-box-seam me-2"></i>Control de Inventario</h5>
-        <button class="btn btn-sm btn-outline-success" onclick="cargarInventario()">
-            <i class="bi bi-arrow-clockwise"></i> Actualizar
-        </button>
-    </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-dark table-hover mb-0">
-                <thead>
-                    <tr>
-                        <th class="ps-3">Material</th>
-                        <th>Stock Actual</th>
-                        <th>Stock Mínimo</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="tablaInventarioBody">
-                    </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-dark text-white border-secondary">
-          <div class="modal-header border-secondary">
-            <h5
-              class="modal-title fw-bold text-info"
-              id="modalNuevoMaterialLabel"
-            >
+            <h5 class="modal-title fw-bold text-info">
               <i class="bi bi-box-seam me-2"></i>Registrar Nuevo Material
             </h5>
             <button
               type="button"
               class="btn-close btn-close-white"
               data-bs-dismiss="modal"
-              aria-label="Close"
             ></button>
           </div>
           <form id="formNuevoMaterial">
             <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label small text-white-50"
-                  >Nombre del Material</label
-                >
-                <input
-                  type="text"
-                  id="matNombre"
-                  class="form-control bg-dark border-secondary text-white"
-                  placeholder="Ej. Vinil Autoadherible"
-                  required
-                />
+              <div class="row">
+                <div class="col-md-7 mb-3">
+                  <label class="form-label small text-white-50"
+                    >Nombre del Material</label
+                  >
+                  <input
+                    type="text"
+                    id="matNombre"
+                    class="form-control bg-dark border-secondary text-white"
+                    required
+                  />
+                </div>
+                <div class="col-md-5 mb-3">
+                  <label class="form-label small text-white-50"
+                    >Marca / Proveedor</label
+                  >
+                  <select
+                    id="matProveedor"
+                    class="form-select bg-dark border-secondary text-white"
+                  >
+                    <option value="">Cargando marcas...</option>
+                  </select>
+                </div>
               </div>
-
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label class="form-label small text-white-50"
@@ -1310,22 +976,19 @@
                     step="0.01"
                     id="matPrecio"
                     class="form-control bg-dark border-secondary text-white"
-                    placeholder="0.00"
                     required
                   />
                 </div>
               </div>
-
               <div class="mb-3">
                 <label class="form-label small text-white-50"
-                  >Stock Inicial</label
+                  >Stock Inicial (Mínimo)</label
                 >
                 <input
                   type="number"
                   step="0.1"
                   id="matStock"
                   class="form-control bg-dark border-secondary text-white"
-                  placeholder="0"
                   required
                 />
               </div>
@@ -1346,15 +1009,35 @@
               </button>
             </div>
           </form>
-          
         </div>
       </div>
-      
-</div>
     </div>
-    
 
-
+    <div class="modal fade" id="modalAjustarStock" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content text-white" style="background: #161922; border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 20px rgba(0,255,255,0.1);">
+          <div class="modal-header border-secondary">
+            <h6 class="modal-title fw-bold text-info"><i class="bi bi-sliders me-2"></i>Ajustar Stock</h6>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <form id="formAjustarStock">
+            <input type="hidden" id="ajusteMaterialId">
+            <input type="hidden" id="ajusteStockActual">
+            <div class="modal-body text-center p-4">
+              <p class="small text-white-50 mb-1" id="ajusteNombreMaterial">Nombre Material</p>
+              <h2 class="fw-bold mb-4 text-success" id="ajusteTextoStockActual">0</h2>
+              <div class="mb-2">
+                <label class="form-label small text-info fw-bold">Cantidad (+ sumar / - restar)</label>
+                <input type="number" step="0.1" id="ajusteCantidad" class="form-control bg-dark border-info text-white text-center fs-4" placeholder="Ej: 5 o -3" required />
+              </div>
+            </div>
+            <div class="modal-footer border-secondary justify-content-center">
+              <button type="submit" class="btn btn-info rounded-pill px-4 fw-bold text-dark w-100">Aplicar Ajuste</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

@@ -141,14 +141,17 @@ body {
 }
 
 .toast-vios {
-    background: linear-gradient(135deg, var(--vios-purple), var(--vios-cyan));
-    color: #ffffff;
-    padding: 14px 22px;
+    background-color: #121420; /* Fondo oscuro sólido del panel */
+    color: #ffffff; /* Texto blanco ultra legible */
+    padding: 16px 24px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
-    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 4px solid var(--vios-cyan); /* Línea lateral neón por defecto */
+    box-shadow: -4px 0 15px -4px rgba(0, 255, 255, 0.3); /* Resplandor cian sutil */
+    
+    /* Animaciones */
     opacity: 0;
     transform: translateX(100%);
     animation: slideIn 0.3s forwards;
@@ -160,3 +163,18 @@ body {
 
 @keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
 @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+
+/* =========================================
+   7. ALERTAS DE INVENTARIO (STOCK BAJO)
+   ========================================= */
+.fila-alerta-stock td {
+    background-color: rgba(255, 51, 102, 0.08) !important;
+}
+
+.fila-alerta-stock td:first-child {
+    border-left: 3px solid #ff3366 !important;
+}
+
+.fila-alerta-stock:hover td {
+    background-color: rgba(255, 51, 102, 0.15) !important;
+}

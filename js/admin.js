@@ -233,68 +233,136 @@ function inicializarFormularios() {
   });
 }
 
-// INVENTARIO Y MATERIALES
+// --- INVENTARIO Y MATERIALES (SISTEMA INTELIGENTE) ---
+
 function inicializarFormularioMateriales() {
+  cargarMarcasEnDroplist(); // Carga Proveedores al droplist
+
   document.getElementById("formNuevoMaterial")?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const nombreInput = document.getElementById("matNombre").value.trim();
+    const proveedorId = document.getElementById("matProveedor").value;
     const dataMaterial = {
-      nombre: document.getElementById("matNombre").value,
-      unidad_medida: document.getElementById("matUnidad").value,
-      costo_m2: 0,
-      precio_venta_m2: parseFloat(document.getElementById("matPrecio").value),
+      nombre: nombreInput, unidad_medida: document.getElementById("matUnidad").value,
+      costo_m2: 0, precio_venta_m2: parseFloat(document.getElementById("matPrecio").value),
       stock_actual: parseFloat(document.getElementById("matStock").value),
+      proveedor_id: proveedorId || null, activo: true, ultima_actualizacion: new Date().toISOString()
     };
+
     try {
-      const { error } = await window.db.from("materiales").insert([dataMaterial]);
-      if (error) throw error;
-      mostrarNotificacion("¡Material registrado!", "success");
-      e.target.reset();
-      cargarMaterialesEnCotizador();
-      cargarInventario();
+      // Búsqueda inteligente: ¿Ya existe pero está oculto?
+      const { data: existente } = await window.db.from("materiales").select("id, activo").ilike("nombre", nombreInput);
+
+      if (existente && existente.length > 0) {
+        if (existente[0].activo) {
+          return mostrarNotificacion("Ese material ya existe y está activo en tu tabla.", "error");
+        } else {
+          // MAGIA: El material estaba "eliminado/oculto". Lo reactivamos.
+          mostrarNotificacion(`Reactivando material oculto en espera de stock...`, "success");
+          await window.db.from("materiales").update(dataMaterial).eq("id", existente[0].id);
+        }
+      } else {
+        // No existía, se crea de cero.
+        await window.db.from("materiales").insert([dataMaterial]);
+        mostrarNotificacion("¡Material registrado como nuevo!", "success");
+      }
+
+      document.getElementById("formNuevoMaterial").reset();
       bootstrap.Modal.getInstance(document.getElementById("modalNuevoMaterial"))?.hide();
+      cargarInventario();
+      cargarMaterialesEnCotizador();
     } catch (err) { mostrarNotificacion("Error: " + err.message, "error"); }
   });
+
+  // Listener para el nuevo modal elegante de Ajuste
+  document.getElementById("formAjustarStock")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const id = document.getElementById("ajusteMaterialId").value;
+    const stockActual = parseFloat(document.getElementById("ajusteStockActual").value);
+    const ajuste = parseFloat(document.getElementById("ajusteCantidad").value);
+    
+    const nuevoStock = stockActual + ajuste;
+    if (nuevoStock < 0) return mostrarNotificacion("El stock final no puede ser menor a cero.", "error");
+
+    try {
+      await window.db.from("materiales").update({ 
+        stock_actual: nuevoStock, ultima_actualizacion: new Date().toISOString() 
+      }).eq("id", id);
+      
+      mostrarNotificacion("Stock actualizado correctamente.", "success");
+      bootstrap.Modal.getInstance(document.getElementById("modalAjustarStock"))?.hide();
+      cargarInventario();
+    } catch (err) { mostrarNotificacion("Error: " + err.message, "error"); }
+  });
+}
+
+async function cargarMarcasEnDroplist() {
+  const select = document.getElementById("matProveedor");
+  if (!select) return;
+  const { data } = await window.db.from("proveedores").select("id, nombre").order("nombre");
+  if (data) select.innerHTML = '<option value="">Sin marca / Genérico</option>' + data.map(p => `<option value="${p.id}">${p.nombre}</option>`).join("");
 }
 
 async function cargarInventario() {
   const tbody = document.getElementById("tbodyInventario");
   if (!tbody) return;
   try {
-    const { data, error } = await window.db.from("materiales").select("*").order("nombre", { ascending: true });
+    const { data, error } = await window.db.from("materiales").select("*").eq("activo", true).order("nombre", { ascending: true });
     if (error) throw error;
-    tbody.innerHTML = data.map((m) => {
+    
+    const hoy = new Date();
+    let html = "";
+
+    for (let m of data) {
+        // Lógica de 3 meses (90 días): Auto-ocultar si está en 0 y nadie lo toca
+        if (m.stock_actual <= 0 && m.ultima_actualizacion) {
+            const difDias = Math.floor((hoy - new Date(m.ultima_actualizacion)) / (1000 * 60 * 60 * 24));
+            if (difDias >= 90) {
+                // Se oculta silenciosamente
+                window.db.from("materiales").update({ activo: false }).eq("id", m.id).then();
+                continue; // Saltamos a la siguiente fila sin dibujarlo
+            }
+        }
+
         const esBajo = m.stock_actual <= (m.stock_minimo || 0);
-        return `
-        <tr class="${esBajo ? 'table-danger text-dark' : ''}">
-            <td class="ps-3 fw-bold ${esBajo ? 'text-dark' : 'text-white'}">${m.nombre}</td>
-            <td class="${esBajo ? 'text-dark' : 'text-white-50'}">${m.unidad_medida || "N/A"}</td>
-            <td class="${esBajo ? 'text-dark' : 'text-white-50'}">${m.stock_minimo || 0}</td>
+        html += `
+        <tr class="${esBajo ? 'fila-alerta-stock' : ''}">
+            <td class="ps-3 fw-bold text-white">${m.nombre}</td>
+            <td class="text-white-50">${m.unidad_medida || "N/A"}</td>
+            <td class="text-white-50">${m.stock_minimo || 0}</td>
             <td class="fw-bold fs-6 ${esBajo ? "text-danger" : "text-success"}">${m.stock_actual || 0}</td>
-            <td>${esBajo ? '<span class="badge bg-danger">Bajo</span>' : '<span class="badge bg-success">Óptimo</span>'}</td>
+            <td>${esBajo ? '<span class="badge bg-danger bg-opacity-25 text-danger border border-danger rounded-pill">Stock Bajo</span>' : '<span class="badge bg-success bg-opacity-25 text-success border border-success rounded-pill">Óptimo</span>'}</td>
             <td class="text-end pe-3">
-                <button class="btn btn-outline-info btn-sm border-0 me-1" onclick="ajustarStock('${m.id}', '${m.nombre}', ${m.stock_actual || 0})"><i class="bi bi-sliders"></i></button>
-                <button class="btn btn-outline-danger btn-sm border-0" onclick="eliminarRegistro('materiales', '${m.id}')"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-outline-info btn-sm border-0 me-1" onclick="abrirModalAjuste('${m.id}', '${m.nombre}', ${m.stock_actual})"><i class="bi bi-sliders"></i></button>
+                <button class="btn btn-outline-danger btn-sm border-0" onclick="inactivarMaterial('${m.id}', '${m.nombre}')"><i class="bi bi-trash"></i></button>
             </td>
         </tr>`;
-    }).join("");
+    }
+    tbody.innerHTML = html;
   } catch (err) { console.error("Error inventario:", err.message); }
 }
 
-async function ajustarStock(id, nombre, stockActual) {
-  const ajuste = prompt(`Ajuste para: ${nombre}\nStock actual: ${stockActual}\nSuma o Resta (ej: 10 o -5):`);
-  if (!ajuste || isNaN(ajuste)) return;
-  try {
-    const { error } = await window.db.from("materiales").update({ stock_actual: parseFloat(stockActual) + parseFloat(ajuste) }).eq("id", id);
-    if (error) throw error;
-    cargarInventario();
-    mostrarNotificacion("Stock actualizado", "success");
-  } catch (err) { mostrarNotificacion("Error: " + err.message, "error"); }
-}
+// Dispara el modal elegante en lugar del feo prompt()
+window.abrirModalAjuste = function(id, nombre, stockActual) {
+    document.getElementById("ajusteMaterialId").value = id;
+    document.getElementById("ajusteStockActual").value = stockActual;
+    document.getElementById("ajusteNombreMaterial").innerText = nombre;
+    document.getElementById("ajusteTextoStockActual").innerText = stockActual;
+    document.getElementById("ajusteCantidad").value = "";
+    new bootstrap.Modal(document.getElementById("modalAjustarStock")).show();
+};
 
-document.getElementById("formRegistrarVenta")?.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  // ... (Tu lógica de registrar venta se mantiene igual de bien)
-});
+// "Soft Delete" en lugar de borrado físico destructivo
+window.inactivarMaterial = async function(id, nombre) {
+  if (!confirm(`¿Ocultar "${nombre}" del inventario? (Su historial financiero seguirá a salvo en la base de datos)`)) return;
+  try {
+    const { error } = await window.db.from("materiales").update({ activo: false }).eq("id", id);
+    if (error) throw error;
+    mostrarNotificacion("Material archivado correctamente.", "success");
+    cargarInventario();
+    cargarMaterialesEnCotizador();
+  } catch (err) { mostrarNotificacion("Error: " + err.message, "error"); }
+};
 
 // --- COTIZADOR ---
 async function cargarMaterialesEnCotizador() {
